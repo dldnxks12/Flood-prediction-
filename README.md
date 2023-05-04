@@ -2,7 +2,8 @@
 
 ---
 
-
+        # TODO
+        
         1. 15-17일 출장
         2. meet up per 2 weeks
         3. uploading model on Server - currently on gang
