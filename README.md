@@ -1,13 +1,14 @@
-##### `재난안전연구원`
+##### 침수심
 
 ---
 
         # TODO
         
-        1. 15-17일 출장
-        2. meet up per 2 weeks
-        3. uploading model on Server - currently on gang
-          - pillow 충돌 주의 
-          - 가상환경 새로 파기 
-        4. 간단히 건들여보기 - output dimension reduction 
+        1. meet up per 1 or 2 weeks
+        2. Server
+        3. metric 
+        4. model size / acc 
+        5. 외수 / 내수 
+                외수 : data 690 -> 250000 (5 sections per year)
+                내수 : data 48  -> 78     (5 sections per year)
         
