@@ -1,3 +1,5 @@
+# 0518 ae_regressor test (not bad but not so good, too)
+
 import sys
 import torch
 import torch.nn as nn
@@ -49,10 +51,10 @@ def main():
     total_pred      = []
     total_pred_dict = dict()
 
-    for idx in range(len(x_data)):
+    for idx in range(len(x_test)):
         if idx % 10 == 0:
             print(f"c idx : {idx}")
-        x = x_data[idx]
+        x = np.expand_dims(x_test[idx], axis=0)
         for i in range(len(test_data_dict)):
             # load weight & eval
             ae.load_state_dict(torch.load("./phase1/model_state_dict" +str(i) + ".pt"))  # part i에 대한 ae network
@@ -61,24 +63,12 @@ def main():
             rg.eval()
 
             latent_x = rg(torch.FloatTensor(x).to(device))
-            pred_y   = ae.deco(latent_x).detach().cpu().numpy()
+            pred_y   = ae.deco(latent_x).squeeze(0).detach().cpu().numpy()
             total_pred.extend(pred_y)
         total_pred_dict[idx] = total_pred
         total_pred = []
 
-    test_pic = y_test[0]
-    pred_pic = total_pred_dict[0]
-
-    test_pic = np.reshape(test_pic, (500, 460))
-    pred_pic = np.reshape(pred_pic, (500, 460))
-
-    cv2.namedWindow("label", cv2.WINDOW_NORMAL)
-    cv2.namedWindow("pred", cv2.WINDOW_NORMAL)
-    cv2.imshow('label', test_pic)
-    cv2.imshow('pred', pred_pic)
-
-    cv2.waitKey(0)
-    cv2.destroyWindow()
+    np.save('total_pred_dict.npy', total_pred_dict)
 
 if __name__ == '__main__':
     main()
