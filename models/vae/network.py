@@ -25,11 +25,10 @@ class Encoder(nn.Module):
         self.logvar = nn.Linear(hidden_dim, noise_dim)
 
         self.relu = nn.ReLU()
-        self.drop = nn.Dropout(0.2)
 
     def forward(self, x):  # input : (batch_size, 1 x 28 x 28) flattened image
-        x = self.drop(self.relu(self.linear1(x)))
-        x = self.drop(self.relu(self.linear2(x)))
+        x = self.relu(self.linear1(x))
+        x = self.relu(self.linear2(x))
 
         mu     = self.mu(x)
         logvar = self.logvar(x)
@@ -45,11 +44,10 @@ class Decoder(nn.Module):
         self.linear3 = nn.Linear(hidden_dim, input_dim)
 
         self.relu = nn.ReLU()
-        self.drop = nn.Dropout(0.2)
 
     def forward(self, x):
-        x    = self.drop(self.relu(self.linear1(x)))
-        x    = self.drop(self.relu(self.linear2(x)))
+        x    = self.relu(self.linear1(x))
+        x    = self.relu(self.linear2(x))
         x_re = F.sigmoid(self.linear3(x))
         return x_re
 
