@@ -1,20 +1,11 @@
 # 0518 ae_regressor test (not bad but not so good, too)
 
-import sys
 import torch
-import torch.nn as nn
-import torch.optim as optim
-import torch.nn.init as init
-import torch.nn.functional as F
 
-import cv2
 import random
 import network
 import numpy as np
-import matplotlib.pyplot as plt
-from sklearn.model_selection import KFold
 
-import multiprocessing as mp
 
 def make_data_dict(train_data):
     data_dict = dict()
