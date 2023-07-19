@@ -17,18 +17,22 @@
 
   
         # 0차 테스트 (from gang) : LSTM + KNN 
-                
-                
+  
         # 1차 테스트 (#done) : AE + Regressor
-                - 단순 예측 (1,2,3,6시간 강우) 
+                - 실제 강우량 기반 침수 예측 
                 - 시계열 정보 무시
+                - module화 완료
+                  - model weight  : 270MB 
+                  - sampling time : 6-7s 
 
-        # 2차 테스트 (#done) : AE + Regressor / LSTM -> 1시간 뒤까지 강우 예측 ok                 
-                - 시계열 정보 최대한 이용
-                - 예측 모델을 재귀적으로 이용 
+
+        # 2차 테스트 (#done) : AE + Regressor / LSTM -> 1시간 뒤까지 강우 예측 ok
+                - 예측 강우량 기반 침수 예측
+                - 시계열 정보 이용
+
                                         
         # 3차 테스트 (#on going) : VAE + Regressor / transformer
-                - 2차 테스트 모델 고도화
+                - 2차 모델 고도화
         
 
 ---
