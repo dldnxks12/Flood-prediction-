@@ -1,5 +1,7 @@
 #### `IEEE Letters - Access`
 
+`Real-Time Flood Damage Prediction with a simple Patch-Based Neural Network 
+
 ---
 
 - `Contribution`
@@ -42,11 +44,13 @@
 
       # 제안한 방법이 어떤 이점이 있는지?? ---- ** 
   
-          본 논문은 실시간으로 강우량만을 입력받아 침수 위치와 깊이를 예측하는 E2E 딥러닝 기반 시스템을 제안한다. (patch-ae-rg)
-          해당 시스템은 5분 단위로 갱신되는 강우량을 이용하여 실시간으로 침수 피해를 예측하고, 시각화를 수행한다. 
-          제안된 모델은 오롯이 데이터 기반 모델이며, 다음 6가지 Case 에 대해 비교를 진행
+          본 논문은 강우량만을 입력받아 실시간으로 침수 위치와 깊이를 예측하는 E2E 딥러닝 기반 시스템을 제안한다. (patch-ae-rg)
+          해당 모델은 Auto Encoder 와 선형 회귀 모델만을 이용하여 간단하게 구성할 수 있으며,
+          모델 입력으로 강우 데이터만을 필요로 하기에 학습이 매우 용이하다. (Patch-based AE + RG)
+          해당 시스템은 오롯이 데이터 기반 모델이며, 5분 단위로 갱신되는 강우량을 이용하여 침수 피해를 예측하고, 시각화를 수행한다.
+          본 논문은 다음 6가지 Case 에 대해 비교를 진행하였다.
 
-          *어떤 dataset 인지, 어떻게 얻었는지*
+          * --- 실험에 사용한 데이터는 ... 어떤 dataset 인지, 어떻게 얻었는지 --- *
 
           1. KNN
           2. RF
@@ -55,8 +59,10 @@
           5. AE + RG  (full image)
           6. CAE + RG (full image)
 
-          이 중 Patch-based AE + RG 가 가장 effective. Low error / fast inference time / light weight 
-          Patch-based AE-RG model is the most effective becauses of its low error and fast inference time. 
+          이 중 Patch-based AE + RG 가 가장 effective. Low error / fast inference time / light weight
+          Patch-based AE-RG model is the most effective becauses of its low error and fast inference time.
+
+          * --- 성능이 다른 것들에 비해 어느 정도 좋은 지 수치적으로 알리기 --- *
 
       본 연구를 통해 실시간으로 예상 침수 깊이와 위치 예상도를 생성하여 큰 피해를 예방할 수 있을 것으로 기대된다. 
 
@@ -100,6 +106,7 @@
       한 때는, 위과 같은 모델들로 침수나 지진 등의 재해를 예측해왔다.
       이 방법들이 effective 하긴 하지만, time consuming + resource consumimg 해서 급격한 재난으로 인한 피해 예측에 practical X
 
+
       # 기존 한계를 극복하기 위한 접근
   
         ML/DL 기반 방법은 위의 단점들을 극복할 수 있다.
@@ -125,6 +132,8 @@
   
       # 0. 그래서 침수 위치와 깊이 예측에 어떤 방법들이 제안되고 있는지
 
+        *우선 아래 4개 논문 리뷰*
+
         1. Rapid forecasting : KNN / RF를 수치해석 모델과 겸해서 사용 - depth 예측 
         2. Jiwook            : KNN / RF 를 only data based로 사용    - depth + 위치 예측
         3. A mixed approach  :
@@ -133,8 +142,10 @@
 
       # 1. 요것들이 가지고 있는 문제가 무엇인가?
 
-        Rapid forecasting - 성능은 좋지만 물리모델 사용으로 인한 연산량 및 실시간성 단점
-        Jiwook            - 연산 및 실시간성은 보장, but 성능이 나쁨 
+        1. Rapid forecasting : 성능은 좋지만 물리모델 사용으로 인한 연산량 및 실시간성 단점
+        2. Jiwook            : 연산 및 실시간성은 보장, but 성능이 나쁨
+        3. A mixed approach  :
+        4. Scenario-baed     :  
   
       # 2. 그래서 내가 제안하는 방법이 어떤 면을 파고드는가?
 
@@ -152,6 +163,12 @@
 
 - Data and study area 
 
+
+      # 어디에 test 했는지?
+  
+        - 경안천 / 반월동 사진 
+        - 왜 이 두 곳을 선택했는지 간단히 설명
+  
       # 어떤 데이터가 사용됬는지?
   
         우리 실험에 필요한 데이터는 강우량과 그에 대응하는 침수 흔적도 뿐이다.
@@ -176,10 +193,6 @@
 
       # 강우량 / 침수 흔적도 데이터를 어떻게 얻었는지?
 
-      # 어디에 test 했는지?
-  
-        - 경안천 / 반월동 사진 
-        - 왜 이 두 곳을 선택했는지 간단히 설명
   
       
 
@@ -201,6 +214,14 @@
       AE + RG / VAE + RG
       System Architecture 
 
+        # paper 
+        우선, 각 강우에 대응되는 침수 흔적도가 어떠한 저차원의 manifold를 갖는 것으로 가정한다.
+        개발한 모델은 총 2개의 단계의 학습 과정을 거친다.
+        첫 번째 단계는 강우에 따른 침수 결과 흔적도를 Patch 별로 나누어 latent vector 를 추출하는 것이다.
+        두 번째 단계는 추출된 latent vector에 대해 대응하는 강우 데이터를 선형회귀시키는 것이다.
+        이는 특정 강우 데이터가 그에 대응되는 침수 결과 흔적도의 manifold를 학습하도록 하는 것이다.
+        추론 과정에서는 선형 회귀 모델을 통해 새로운 강우데이터에 대응되는 manifold를 추정하고, 이를 decoding 하여 예측 침수 흔적도를 생성한다.
+        이러한 간단한 방법을 통해 기존의 수치해석 및 통계 기반 모델보다 더 빠르게 추론을 수행하며, 높은 정확도를 실험적으로 보여준다.  
 
 ---
 
@@ -218,6 +239,9 @@
       2. 실제 지도에 실험 결과 뿌려서 보여주기
     
       # Compare
+          #1) 경안천에 KNN/RF/AE+RG/CAE+RG/Patch-base method 비교
+          #2) 반월천에 AE+RG / VAE+RG 성능 비교
+          #3) 오천/냉천도 시간적으로 여유있다면 실험
 
           1. KNN
           2. RF
