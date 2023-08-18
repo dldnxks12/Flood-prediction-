@@ -4,11 +4,24 @@
 
 - `Contribution`
 
-    
-        1. 깊이와 위치를 동시에 예측
-        2. Patch-based
-        3. 수치해석 모델 사용 x
-        4. 내가 만든 dataset 으로 실험 
+        #1)
+        강우 Input -> 침수 위치 / 깊이 output 있는가?
+            -> 내 방법이 유일? -> abstract 에서 어필
+
+        #2)
+        physical / statistical model X only data based model -> 실시간 예측 가능
+            -> inference time / gis data conversion time / db upload time
+
+
+        #3)
+        내 방법과 비슷한 논문이 있는가>
+
+        3-2) 있다면 내 방법이 더 좋은가? Whole Image vs Patch-based
+        3-3) 없다면 다른 방법에 비해 내 방법이 더 좋은가? Patch-based AE+RG
+
+        #4)
+        Custom dataset 어필 
+
 
 ---
 
@@ -30,8 +43,12 @@
 
       # 제안한 방법이 어떤 이점이 있는지?? ---- 추가 
   
-          본 논문은 실시간으로 강우량에 따른 침수 위치와 깊이를 예측하는 딥러닝 기반 모델을 제안한다.
-          제안된 모델은 오롯이 딥러닝 모델만을 이용하여 침수 위치와 깊이를 실시간으로 예측하며, ~ 의 성능이 나온다. 
+          본 논문은 simply AE+RG 해서 실시간으로 강우량에 따른 침수 위치와 깊이를 예측하는 딥러닝 기반 모델을 제안한다.
+          
+          제안된 모델은 오롯이 딥러닝 모델만을 이용하여 침수 위치와 깊이를 실시간으로 예측하며,
+          다음 5가지 모델에 대해 비교를 진행 
+          KNN / RF / Full-image based AE + RG / Patch-based AE + RG /  Patch-based VAE + RG 
+          Patch-based AE-RG model is the most effective becauses of its low error and fast inference time. 
 
 
       본 연구를 통해 실시간으로 예상 침수 깊이와 위치 예상도를 생성하여 큰 피해를 예방할 수 있을 것으로 기대된다. 
@@ -110,7 +127,6 @@
             - 왜 이 두 곳을 선택했는지 간단히 설명 
   
 
-
 ---
 
 - Background
@@ -169,13 +185,22 @@
 
 - Experiment / Result / Discussion 
 
-      경안천 / 반월천 예측 결과
+      # 경안천 / 반월천 예측 결과
 
+      경안천 - 690개 데이터 - ML의 경우 모든 데이터를 한 번에 올려서 학습해야함 -> 방대한 데이터를 연속 학습 불가
+      반월천 - 25680개 데이터 - ML의 경우 연속 학습 불가 -> DL의 경우 연속학습 가능
+
+      따라서 경안천의 경우 KNN vs RF vs AE+RG 비교
+      반월천의 경우 AE+RG의 성능만 비교 
+
+      1. 실험 결과 graph (경안천 / 반월천)
+      2. 실제 지도에 실험 결과 뿌려서 보여주기
+    
       # Compare
       1. AE vs VAE
       2. Original Latent vs patch-based latent - ablation study 
-      3. AE+RG vs ViT
-      4. RF / KNN / LSTM+KNN  vs AE+RG
+      3. AE+RG vs ViT 선택 
+      4. RF / KNN   vs AE+RG
 
         - 평가지표 결과 - 깊이 (RMSE / Max-Min error / MRE) - 위치 (Sensitivity / Precision / F1 / Accuracy / IoU)
         - 모델 크기
